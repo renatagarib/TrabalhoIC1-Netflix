@@ -113,6 +113,7 @@ int main(int argc, char **argv)
     char *token;
 
     //___________________________________LEITURA DE ARQUIVO CSV E ARMAZENAMENTO EM UM ARRAY________________________//
+    // QUESTAO 1
 
     if ((NetFlixCSV = fopen(NetFlixFile, "r")) == NULL)
     { //Abrir o arquivo dado
@@ -208,11 +209,13 @@ int main(int argc, char **argv)
 
     int TOTAL; // Contador para total de filmes
 
+    // QUESTÃO 2 E 3
+
     printf("Ano; G; PG; PG-13; R; NR; UR; TV-G; TV-PG; TV-14; TV-MA; TV-Y; TV-Y7; TV-Y7-FV; TOTAL\n");
     for (int a = ultimo_ano; a >= primeiro_ano; a--)
     {
 
-        int G = 0;                    // Criando as variaveis para cada rating
+        int G = 0;                    // Criando os contadores para cada rating
         int PG = 0;
         int PG13 = 0;
         int R = 0;
@@ -228,7 +231,6 @@ int main(int argc, char **argv)
         int outros = 0;
         int total = 0;        // Cotador para total de filmes por ano
 
-        int melhores[10] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1}; // Criando uma matriz para colocar os top 10 filmes de cada ano
         int n = 0;
 
         for (int b = 0; b < ActualNumberOfMovies; b++)         
@@ -237,31 +239,6 @@ int main(int argc, char **argv)
             if (NetFlixMovies[b].releaseYear == a)       
             {
 
-
-
-                //Preeche a matriz com os 10 primeiros filmes do ano em questão 
-                if (n < 10)
-                {
-                    melhores[n] = b;
-                    n++;
-                }
-
-                //Subustitui filmes com melhor nota na matriz
-                else
-                {
-
-                    int melhor = 0;
-                    for (int k = 0; k < 10; k++)
-                    {
-                        if (NetFlixMovies[b].userRatingScore > NetFlixMovies[melhores[k]].userRatingScore)
-                        {
-                            if (((int)NetFlixMovies[b].userRatingScore <= 100))
-                            {
-                                melhores[k] = b;
-                            }
-                        }
-                    }
-                }
 
                 // Adiciona um na variavel do rating do filme em questão
                 if (strcmp(NetFlixMovies[b].rating, "G") == 0)
@@ -337,7 +314,7 @@ int main(int argc, char **argv)
 
     FILE *UserRatingScore; // Criando o arquivo para o item 4
 
-    UserRatingScore = fopen("UserRatingScore.csv", "w");
+    UserRatingScore = fopen("UserRatingScore.txt", "w");
 
     for (int a = ultimo_ano; a >= primeiro_ano; a--)
     {
@@ -349,15 +326,18 @@ int main(int argc, char **argv)
             {
                 // Melhores10 Filmes (QUESTÃO 4)
                 if ( Primeiros10MelhoesFilmes < 10 ) {
-                    if (Primeiros10MelhoesFilmes == 0) printf("\n");
+                    if (Primeiros10MelhoesFilmes == 0){
+                        printf("\n");fprintf(UserRatingScore,"\r\n");
+                        }
                     printf("Melhores Filmes de [%i] %iº lugar vai para: [%s] com UserRatingScore [%i]\n", a, Primeiros10MelhoesFilmes+1,
                         NetFlixMovies[b].title,
                         NetFlixMovies[b].userRatingScore);
-                    fprintf(UserRatingScore,"Melhores Filmes de [%i] %iº lugar vai para: [%s] com UserRatingScore [%i]\n", a, Primeiros10MelhoesFilmes+1,
+                    fprintf(UserRatingScore,"Melhores Filmes de [%i] %iº lugar vai para: [%s] com UserRatingScore [%i]\r\n", a, Primeiros10MelhoesFilmes+1,
                         NetFlixMovies[b].title,
                         NetFlixMovies[b].userRatingScore);
                     
                     ++Primeiros10MelhoesFilmes;
+                   
                 }
             }
         }
@@ -373,7 +353,7 @@ int main(int argc, char **argv)
 
 
 
-
+    // QUESTÕ 5
     int sexual = 0;    // Cria contadores para os filmes sexuais e violentos
     int violent = 0;
 
@@ -395,6 +375,8 @@ int main(int argc, char **argv)
     printf("A porcentagem de filmes com conteudo sexual é %f%%\n", 100 * (double) sexual/ (double) TOTAL);
 
     printf("A porcentagem de filmes com conteudo violento é %f%%\n", 100* (double) violent/ (double) TOTAL);
+
+    // QUESTÃO 6
 
     for (;;)
     {
