@@ -206,32 +206,6 @@ int main(int argc, char **argv)
         }
     }
 
-    for (int a = ultimo_ano; a >= primeiro_ano; a--)
-    {
-        int Primeiros10MelhoesFilmes = 0;
-
-        for (int b = 0; b < ActualNumberOfMovies; b++)         
-        {
-            if (NetFlixMovies[b].releaseYear == a)       
-            {
-                // Melhores10 Filmes (QUESTÃO 4)
-                if ( Primeiros10MelhoesFilmes < 10 ) {
-                    if (Primeiros10MelhoesFilmes == 0) printf("\n");
-                    printf("Melhores Filmes de [%i] %iº lugar vai para: [%s] com UserRatingScore [%i]\n", a, Primeiros10MelhoesFilmes+1,
-                        NetFlixMovies[b].title,
-                        NetFlixMovies[b].userRatingScore);
-                    ++Primeiros10MelhoesFilmes;
-                }
-            }
-        }
-
-    }
-    printf("\n\n\n\n");
-
-    FILE *UserRatingScore; // Criando o arquivo para o item 4
-
-    UserRatingScore = fopen("UserRatingScore.csv", "w");
-
     int TOTAL; // Contador para total de filmes
 
     printf("Ano; G; PG; PG-13; R; NR; UR; TV-G; TV-PG; TV-14; TV-MA; TV-Y; TV-Y7; TV-Y7-FV; TOTAL\n");
@@ -350,16 +324,6 @@ int main(int argc, char **argv)
 
         if (total)
         {
-            fprintf(UserRatingScore, "Melhores de %i", a); // Imprimi no arquivo do item 4 a matriz dos top 10 filmes
-            for (int j = 0; j < 10; j++)
-            {
-                if (melhores[j] != -1) // imprimi apenas os termos não nulos da matriz
-                {
-                    fprintf(UserRatingScore, "; %s", NetFlixMovies[melhores[j]].title);
-                }
-            }
-            fprintf(UserRatingScore, "\n");
-
             printf("%i; %i; %i; %i; %i; %i; %i; %i; %i; %i; %i; %i; %i; %i; %i; \n",
                    a, G, PG, PG13, R, NR, UR, TVG, TVPG, TV14, TVMA, TVY, TVY7, TVY7FV, total);
 
@@ -367,6 +331,47 @@ int main(int argc, char **argv)
             TOTAL+=total;
         }
     }
+
+
+
+
+    FILE *UserRatingScore; // Criando o arquivo para o item 4
+
+    UserRatingScore = fopen("UserRatingScore.csv", "w");
+
+    for (int a = ultimo_ano; a >= primeiro_ano; a--)
+    {
+        int Primeiros10MelhoesFilmes = 0;
+
+        for (int b = 0; b < ActualNumberOfMovies; b++)         
+        {
+            if (NetFlixMovies[b].releaseYear == a)       
+            {
+                // Melhores10 Filmes (QUESTÃO 4)
+                if ( Primeiros10MelhoesFilmes < 10 ) {
+                    if (Primeiros10MelhoesFilmes == 0) printf("\n");
+                    printf("Melhores Filmes de [%i] %iº lugar vai para: [%s] com UserRatingScore [%i]\n", a, Primeiros10MelhoesFilmes+1,
+                        NetFlixMovies[b].title,
+                        NetFlixMovies[b].userRatingScore);
+                    fprintf(UserRatingScore,"Melhores Filmes de [%i] %iº lugar vai para: [%s] com UserRatingScore [%i]\n", a, Primeiros10MelhoesFilmes+1,
+                        NetFlixMovies[b].title,
+                        NetFlixMovies[b].userRatingScore);
+                    
+                    ++Primeiros10MelhoesFilmes;
+                }
+            }
+        }
+
+    }
+    fclose(UserRatingScore);
+    printf("\n\n\n\n");
+
+
+
+
+
+
+
 
 
     int sexual = 0;    // Cria contadores para os filmes sexuais e violentos
