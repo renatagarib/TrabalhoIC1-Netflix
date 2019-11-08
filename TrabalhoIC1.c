@@ -15,7 +15,7 @@
 #define NetFlixFile "netflix_all.csv" 
 #define NumMaxOfRecords 999           
 
-struct NetflixMovieRecord
+struct NetflW
 {
     char title[200];
     char rating[10];
